@@ -16,7 +16,6 @@ NyaySetu ("Bridge to Justice") is an AI-driven judicial decision-support platfor
 - [Database Schema & Data Models](#database-schema--data-models)
 - [REST API Reference](#rest-api-reference)
 - [Quick Start & Setup](#quick-start--setup)
-  - [Default Demo Credentials](#default-demo-credentials)
   - [Zero-Dependency In-Memory Mode](#zero-dependency-in-memory-mode)
   - [Running the Services](#running-the-services)
 - [Legal, Ethical & Safety Constraints](#legal-ethical--safety-constraints)
@@ -138,7 +137,7 @@ $$\text{Priority Score} = f(\text{Pendency}, \text{Urgency Boost}, \text{Evidenc
 ### 1. `users`
 - `username`: String (Unique)
 - `email`: Email (Unique)
-- `password_hash`: String (pbkdf2:sha256)
+- `password_hash`: String (Hashed)
 - `role`: Enum (`judge`, `lawyer`, `citizen`)
 - `full_name`, `phone`, `is_active`, `created_at`
 
@@ -169,7 +168,7 @@ $$\text{Priority Score} = f(\text{Pendency}, \text{Urgency Boost}, \text{Evidenc
 
 ### Authentication (`/api/auth`)
 - `POST /api/auth/register` – Register a new user profile.
-- `POST /api/auth/login` – Authenticate with username/password, returns JWT token.
+- `POST /api/auth/login` – User authentication endpoint.
 
 ### Case Management (`/api/cases`)
 - `GET /api/cases` – List paginated cases with JIT priority calculations (`?page=1&per_page=20&status=Pending`).
@@ -215,13 +214,8 @@ python start_all.py
 - **Web UI**: [http://localhost:3000](http://localhost:3000)
 - **API Endpoint**: [http://localhost:5000](http://localhost:5000)
 
-### Default Demo Credentials
-NyaySetu includes built-in 1-click role logins on the login page:
-| Role | Username | Password |
-| :--- | :--- | :--- |
-| **Judge** | `judge` | `password123` |
-| **Lawyer** | `lawyer` | `password123` |
-| **Citizen** | `citizen` | `password123` |
+### Role Selection on Login
+The web application provides dedicated role-switching controls (Judge, Lawyer, Citizen) directly on the authentication portal for seamless demonstration and testing of role-specific workflows.
 
 ### Zero-Dependency In-Memory Mode
 If an external MongoDB Atlas cluster or Redis instance is not configured in `backend/.env`, NyaySetu **automatically falls back** to an in-memory database (`mongomock`) with synchronous eager task processing. It pre-seeds demo accounts, statutory acts, and multidimensional court cases out-of-the-box.
