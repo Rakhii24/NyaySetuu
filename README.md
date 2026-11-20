@@ -4,22 +4,88 @@ NyaySetu ("Bridge to Justice") is an AI-driven judicial decision-support platfor
 
 ---
 
+## 📖 What is NyaySetu?
+
+**NyaySetu** (derived from the Sanskrit words *Nyay* meaning "Justice" and *Setu* meaning "Bridge") is an intelligent decision-support platform built to modernize court case management in India.
+
+In India's legal ecosystem, over **40 million cases** remain pending across District Courts, High Courts, and the Supreme Court. At the same time, rapid legislative updates—such as the transition to the *Bharatiya Nyaya Sanhita (BNS)*, the *Digital Personal Data Protection (DPDP) Act*, and statutory bail reforms—frequently alter procedural and substantive rights. Legal practitioners and judges often face delays in discovering how new enactments impact ongoing trials, while ordinary citizens struggle with complex legal jargon.
+
+NyaySetu acts as a technological bridge that:
+- **Assists Judges** in managing daily dockets by highlighting cases requiring urgent intervention (e.g., long-term undertrial detentions, time-sensitive bail pleas, or injunctions).
+- **Equips Lawyers** with early-warning statutory alerts, detailing how newly enacted laws or amendments affect their ongoing active matters.
+- **Empowers Citizens** by breaking down intricate legal provisions into transparent, simple, and rights-focused summaries.
+
+---
+
+## ⚙️ How NyaySetu Works (Step-by-Step Workflow)
+
+```mermaid
+flowchart LR
+    A["1. Case Ingestion\n(CNR, Dates, Court, Text)"] --> B["2. ML Prioritization\n(XGBoost / Random Forest)"]
+    B --> C["3. XAI Rationale\n(Feature Justifications)"]
+    
+    D["Statutory Enactments\n(PIB / Gazette Scraper)"] --> E["4. Section & NLP Parsing\n(Regex + all-MiniLM-L6)"]
+    E --> F["5. Impact Matching\n(Case-Law Correlation)"]
+    
+    F --> G["6. Dual Summaries\n(T5: Lawyer & Citizen)"]
+    C --> H["7. Role Dashboards\n& Email Alerts"]
+    G --> H
+```
+
+### 1. Case Ingestion & Feature Engineering
+- Court records (metadata, filing dates, hearing counts, evidence records, and descriptions) are ingested into the platform.
+- The system extracts key urgency factors—such as applications for bail, arrest without notice, injunctions, and stage of proceedings (Trial vs. Appeal).
+
+### 2. Intelligent Case Prioritization
+- The feature vector is processed through an ML prioritization pipeline (trained on 1,000,000+ judicial case records).
+- Each case receives a normalized **Priority Score** ($0.0 - 1.0$) and a categorical classification: **High**, **Medium**, or **Low**.
+- Factors include pendency age, hearing density, evidence volume, court tier weighting, and societal sensitivity.
+
+### 3. Transparent Explainability (XAI)
+- Rather than providing an opaque score, the Explainable AI (XAI) module generates a plain-text rationale for judges explaining *why* the case has been prioritized (e.g., highlighting that an undertrial has spent more than 14 months in custody for a non-heinous crime).
+
+### 4. Statutory Ingestion & Semantic Section Extraction
+- The platform scans legislative releases from the Gazette of India, Press Information Bureau (PIB), and Ministry of Law repositories.
+- Statutory text is processed with regular-expression rule engines to extract precise citations (e.g., *Section 41A CrPC*, *Section 61 BNS*, *Article 21*).
+- Dense semantic vector embeddings (384-dimensional) are generated via `sentence-transformers/all-MiniLM-L6-v2`.
+
+### 5. Case-Law Correlation & Impact Scoring
+- The **Impact Engine** cross-references new statutory amendments against active case records using a weighted scoring matrix:
+  - **Statute Section Match (+40)**: Matches extracted sections between the new law and the case.
+  - **Semantic Cosine Alignment (+30)**: Measures linguistic similarity between statutory text and case issues.
+  - **Procedural Stage (+15 / +10)**: Prioritizes appeals and active trials.
+  - **Category Weight (+10)**: Categorizes Criminal, Labour, Commercial, Technology, or Civil matters.
+  - **Social Sensitivity (+5)**: Accounts for societal impact.
+
+### 6. Dual-Perspective Summarization (T5 Transformer)
+- To ensure every stakeholder understands the legal effect, the NLP summarization engine produces two distinct outputs:
+  - **Technical Lawyer View**: Focuses on legal procedure, evidentiary changes, shift in burden of proof, and case precedents.
+  - **Simplified Citizen View**: Written in clear, non-technical language to explain rights protections and court progress.
+
+### 7. Real-Time Alerts & Role-Specific Portals
+- High-priority cases and statutory alerts are surfaced across dedicated portals for Judges, Lawyers, and Citizens.
+- Critical statutory impact briefs can be dispatched directly to verified email addresses via SMTP.
+
+---
+
 ## 📌 Table of Contents
-- [Executive Overview](#executive-overview)
-- [System Architecture](#system-architecture)
-- [Core Functional Modules](#core-functional-modules)
+- [What is NyaySetu?](#-what-is-nyaysetu)
+- [How NyaySetu Works](#️-how-nyaysetu-works-step-by-step-workflow)
+- [Executive Overview](#-executive-overview)
+- [System Architecture](#️-system-architecture)
+- [Core Functional Modules](#-core-functional-modules)
   - [1. Case Prioritization Engine](#1-case-prioritization-engine)
   - [2. Proactive Law Impact Analyzer](#2-proactive-law-impact-analyzer)
   - [3. Stakeholder Notification System](#3-stakeholder-notification-system)
-- [Technology Stack](#technology-stack)
-- [Role-Based Access Control (RBAC)](#role-based-access-control-rbac)
-- [Database Schema & Data Models](#database-schema--data-models)
-- [REST API Reference](#rest-api-reference)
-- [Quick Start & Setup](#quick-start--setup)
+- [Technology Stack](#-technology-stack)
+- [Role-Based Access Control (RBAC)](#-role-based-access-control-rbac)
+- [Database Schema & Data Models](#️-database-schema--data-models)
+- [REST API Reference](#-rest-api-reference)
+- [Quick Start & Setup](#-quick-start--setup)
   - [Zero-Dependency In-Memory Mode](#zero-dependency-in-memory-mode)
   - [Running the Services](#running-the-services)
-- [Legal, Ethical & Safety Constraints](#legal-ethical--safety-constraints)
-- [Future Roadmap](#future-roadmap)
+- [Legal, Ethical & Safety Constraints](#️-legal-ethical--safety-constraints)
+- [Future Roadmap](#️-future-roadmap)
 
 ---
 
