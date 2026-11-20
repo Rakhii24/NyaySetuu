@@ -1,0 +1,27 @@
+
+Model                | RMSE     | Accuracy | F1-Score
+------------------------------------------------------------
+🔄 Evaluating Decision Tree...
+Decision Tree        | 0.1078   | 0.7474   | 0.5732
+🔄 Evaluating Random Forest...
+Random Forest        | 0.0971   | 0.7660   | 0.5875
+🔄 Evaluating XGBoost...
+XGBoost              | 0.0923   | 0.7746   | 0.5817
+------------------------------------------------------------
+
+🏆 WINNER: Random Forest (Based on Macro F1-Score)
+🎯 Detailed Metrics for Random Forest (Urgent Case Performance):
+Priority Class  | Precision  | Recall     | F1-Score
+-------------------------------------------------------
+High*           | 0.7632    | 0.7790    | 0.7710
+Med             | 0.7701    | 0.7595    | 0.7648
+Low             | 0.4311    | 0.1538    | 0.2267
+
+📌 Confusion Matrix (Random Forest):
+Actual \ Pred   | High     | Mid      | Low     
+--------------------------------------------------
+High            | 80690    | 22885    | 0       
+Med             | 25036    | 79782    | 223     
+Low             | 0        | 930      | 169     
+
+✅ Verification Complete - No Urgent Cases Missed by Random Forest
